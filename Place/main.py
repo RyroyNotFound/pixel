@@ -34,8 +34,8 @@ def init_grille(size_grille):
             rows.append(0)
         cells.append(rows)
 
-
-
+screen.fill((255,255,255))
+display.update()
 init_grille(size_grille)
 while running :
     for e in event.get():
@@ -55,7 +55,7 @@ while running :
                 y_pos  = math.trunc(y_temp)
 
                 cells[x_pos][y_pos] = color
-                
+
                 for x in range(size_grille[0]):
                     for y in range(size_grille[1]):
                         draw.rect(screen, COLORS[cells[x][y]],((x*size_cell[0],y*size_cell[1]),(size_cell[0],size_cell[1])))
@@ -106,8 +106,6 @@ while running :
     if key.get_pressed()[K_KP9]:
         color = 9
 
-
-    screen.fill((255,255,255))
 
 
 
