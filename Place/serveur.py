@@ -1,18 +1,22 @@
 from flask import Flask, request
 app = Flask(__name__)
 
-tab = [] #Cette liste contiendra ma map en 2D
-for i in range():
-    tab.append([0] * 6) #Ajoute 30 colonnes de 30 entiers(int) ayant pour valeurs 0
+tab = [] 
+for i in range(5):
+    tab.append([0] * 6)
 
 @app.route('/place', methods=['POST'])
 def dessin_case():
-        return ''
+    x = request.json["x"]
+    y = request.json["y"]
+    couleur = request.json["color"]
+
+    return ''
 
 @app.route('/full', methods=['GET'])
 def retourne_tableau():
-        print(f"OK Get !")
-        return ''
+    print(f"Retourne le tableau !")
+    return tab
 
 print(tab)
 app.run()
