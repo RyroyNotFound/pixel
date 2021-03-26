@@ -18,7 +18,7 @@ def dessin_case():
 
 @app.route('/full', methods=['GET'])
 def retourne_tableau():
-    print("Retourne le tableau !")
+    print(tab)
     return jsonify(tab)
 
 app.run()

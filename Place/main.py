@@ -35,6 +35,7 @@ COLORS = [
 
 def update_grille():
     cells = requests.get('http://127.0.0.1:5000/full').json()
+    print("ok")
 
 def init_grille(size_grille):    
 
