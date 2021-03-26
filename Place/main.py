@@ -2,6 +2,8 @@ import pygame
 from pygame import display, event, key, draw
 from pygame.constants import K_KP0, K_KP1, K_KP2, K_KP3, K_KP4, K_KP5, K_KP6, K_KP7, K_KP8, K_KP9
 import math
+import requests
+from json import dumps
 
 
 pygame.init()
@@ -13,6 +15,10 @@ color = 1
 cells = []
 size_grille = (30,30)
 size_cell = (30,30)
+# Headers HTTP pour indiquer le format au serveur
+headers = { 'content-type': 'application/json' }
+CALL_LIMIT = 5000
+i=0
 
 COLORS = [
  (255, 255, 255), # White
@@ -27,7 +33,11 @@ COLORS = [
  (128, 128, 128), # Gray
 ]
 
-def init_grille(size_grille):
+def update_grille():
+    cells = requests.get('http://127.0.0.1:5000/full').json()
+
+def init_grille(size_grille):    
+
     for x in range(size_grille[0]):
         rows = []
         for y in range(size_grille[1]):                
@@ -38,6 +48,10 @@ screen.fill((255,255,255))
 display.update()
 init_grille(size_grille)
 while running :
+    if i == CALL_LIMIT:
+        update_grille()
+        i = 0
+    
     for e in event.get():
         if e.type == pygame.QUIT:
             running = False
@@ -56,21 +70,16 @@ while running :
 
                 cells[x_pos][y_pos] = color
 
+                body = {'x' : x_pos, 'y' : y_pos, 'color' : color}
+
+                requests.post('http://127.0.0.1:5000/place',dumps(body),headers=headers)
+
+
                 for x in range(size_grille[0]):
                     for y in range(size_grille[1]):
                         draw.rect(screen, COLORS[cells[x][y]],((x*size_cell[0],y*size_cell[1]),(size_cell[0],size_cell[1])))
 
-
-
             display.update()
-
-
-
-
-
-
-
-
 
                 #fonction remplir couleur sur la case
         else :
@@ -105,10 +114,4 @@ while running :
     
     if key.get_pressed()[K_KP9]:
         color = 9
-
-
-
-
-
-
-
+    i += 1
